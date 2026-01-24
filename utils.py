@@ -36,6 +36,26 @@ def setup():
 			move(North)
 		move(East)
 	
-def hat():
-	# Make this randomly assigned once I unlock it
-	change_hat(Hats.Traffic_Cone)
+def rand_hat():
+	hats = [
+		Hats.Brown_Hat,
+		Hats.Carrot_Hat,
+		Hats.Gray_Hat,
+		Hats.Green_Hat,
+		Hats.Pumpkin_Hat,
+		Hats.Purple_Hat,
+		Hats.Straw_Hat,
+		Hats.Sunflower_Hat,
+		Hats.Traffic_Cone,
+		Hats.Tree_Hat
+	]
+	change_hat(random_elem(hats))
+	
+def wait_until_grown():
+	while not can_harvest():
+		rand_hat()
+	
+def random_elem(list):
+	index = random() * len(list) // 1
+	return list[index]
+	

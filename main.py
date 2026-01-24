@@ -7,7 +7,6 @@ clear()
 # common vars
 N = get_world_size()
 
-utils.hat()
 utils.setup()
 
 # main control loop

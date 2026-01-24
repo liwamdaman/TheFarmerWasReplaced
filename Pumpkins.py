@@ -1,33 +1,34 @@
+from actions import *
+from utils import rand_hat
+
 # Tries to create one big pumpkin with the entire grid
 N = get_world_size()
 
 def replace_dead():
-	dead_detected = True
-	while dead_detected:
-		dead_detected = False
-		for i in range(N):
-			for j in range(N):
-				if get_entity_type() == Entities.Dead_Pumpkin:
-					plant(Entities.Pumpkin)
-					dead_detected = True
-				move(North)
-			move(East)
-
-def pumpkins():
+	check_queue = []
 	for i in range(N):
 		for j in range(N):
-			till()
-			move(North)
-		move(East)
+			check_queue.append((i,j))
+	while check_queue:
+		x, y = check_queue.pop(0)
+		goto(x, y)
+		# wait until pumpkin is fully grown, if dead, then replace and move onto next.
+		while get_entity_type() == Entities.Pumpkin and not can_harvest():
+			rand_hat()
+		if get_entity_type() == Entities.Dead_Pumpkin:
+			plant(Entities.Pumpkin)
+			check_queue.append((x, y))
+
+def pumpkins():
 	while True:
-		replace_dead()
-		# Should be able to harvest using single tile
-		harvest()
 		for i in range(N):
 			for j in range(N):
-				plant(Entities.Pumpkin)
-				move(North)
-			move(East)
+				goto(i, j)
+				smart_plant(Entities.Pumpkin)
+		replace_dead()
+		# Should be able to harvest using single tile
+		goto(0, 0)
+		harvest()
 
 if __name__ == "__main__":
 	clear()
