@@ -1,3 +1,5 @@
+# This is old code, not really used at the moment
+
 import utils
 import Flags
 from actions import *
@@ -12,7 +14,7 @@ utils.setup()
 # main control loop
 def main(tick_limit): 
 	while True:
-		if Flags.sunflowers_enabled:
+		if Flags.SUNFLOWERS_ENABLED:
 			# Assumes that sunflowers are all fully grown
 			max_petals = 0
 			max_petals_loc = [0,0]

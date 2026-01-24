@@ -1,3 +1,6 @@
+import Flags
+from watering import smart_water
+
 opposite = {
 	East:West,
 	West:East,
@@ -48,6 +51,8 @@ def smart_plant(entity):
 	else:
 		if get_ground_type() != Grounds.Grassland:
 			till()
+	if Flags.AUTO_WATER_WITH_PLANT:
+		smart_water()
 	if entity != get_entity_type():
 		plant(entity)
 		

@@ -6,6 +6,7 @@
 
 from actions import *
 from utils import *
+from watering import smart_water
 
 N = get_world_size()
 entities_to_plant = [
@@ -52,8 +53,8 @@ def plant_with_tree_set(entity, tree_set, check_neighbours = False):
 		if check_neighbours:
 			for neighbour in neighbours(x, y):
 				if neighbour in tree_set:
-					# plant grass instead
-					smart_plant(Entities.Grass)
+					# plant bush instead
+					smart_plant(Entities.Bush)
 					return
 		tree_set.add((x, y))
 	smart_plant(entity)

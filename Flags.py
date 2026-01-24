@@ -1,1 +1,3 @@
-sunflowers_enabled = True
+SUNFLOWERS_ENABLED = True
+AUTO_WATER_WITH_PLANT = False
+DEBUG = True

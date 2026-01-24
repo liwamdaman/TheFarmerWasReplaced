@@ -1,10 +1,11 @@
 import Flags
 from actions import *
+from watering import smart_water
 
 N = get_world_size()
 
 def setup():
-	if Flags.sunflowers_enabled:
+	if Flags.SUNFLOWERS_ENABLED:
 		sun_x = 3
 		sun_y = 4
 		for i in range(sun_x):
@@ -54,6 +55,7 @@ def rand_hat():
 	
 def wait_until_grown():
 	while not can_harvest():
+		smart_water()
 		rand_hat()
 	
 def random_elem(list):
