@@ -42,13 +42,14 @@ def move_harvest_replace(x, y):
 	harvest_replace()
 	
 def smart_plant(entity):
-	if entity in set([Entities.Carrot, Entities.Pumpkin, Entities.Sunflower]): 
+	if entity in set([Entities.Carrot, Entities.Pumpkin, Entities.Sunflower, Entities.Cactus]): 
 		if get_ground_type() != Grounds.Soil:
 			till()
 	else:
 		if get_ground_type() != Grounds.Grassland:
 			till()
-	plant(entity)
+	if entity != get_entity_type():
+		plant(entity)
 		
 if __name__ == "__main__":
 	# testing move() and visually validating results

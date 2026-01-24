@@ -1,6 +1,8 @@
 import Flags
 from actions import *
 
+N = get_world_size()
+
 def setup():
 	if Flags.sunflowers_enabled:
 		sun_x = 3
@@ -14,7 +16,6 @@ def setup():
 	
 	# Set up the grid with plants and soil types
 	# Need to figure out proportions still
-	N = get_world_size()
 	wood = N//3
 	carrot = N//5
 	grass = N - wood - carrot
@@ -58,4 +59,27 @@ def wait_until_grown():
 def random_elem(list):
 	index = random() * len(list) // 1
 	return list[index]
+	
+def neighbours(i, j):
+	res = []
+	if i > 0:
+		res.append((i - 1, j))
+	if j > 0:
+		res.append((i, j - 1))
+	if i < N - 1:
+		res.append((i + 1, j))
+	if j < N - 1:
+		res.append((i, j + 1))
+	return res
+
+def benchmark(func):
+	tick_limit = 1000000
+	hay, wood, carrots, pumpkins = num_items(Items.Hay), num_items(Items.Wood), num_items(Items.Carrot), num_items(Items.Pumpkin)
+	func(tick_limit)
+	quick_print("hay, wood, carrots, pumpkins gained: ")
+	quick_print(num_items(Items.Hay) - hay)
+	quick_print(num_items(Items.Wood) - wood)
+	quick_print(num_items(Items.Carrot) - carrots)
+	quick_print(num_items(Items.Pumpkin) - pumpkins)
+	
 	

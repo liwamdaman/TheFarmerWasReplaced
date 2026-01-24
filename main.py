@@ -10,7 +10,7 @@ N = get_world_size()
 utils.setup()
 
 # main control loop
-def main(): 
+def main(tick_limit): 
 	while True:
 		if Flags.sunflowers_enabled:
 			# Assumes that sunflowers are all fully grown
@@ -29,6 +29,11 @@ def main():
 		for i in range(N):
 			for j in range(N):
 				move_harvest_replace(i, j)
+				
+		# Only used for performance testing with utils.benchmark()
+			if tick_limit and get_tick_count() > tick_limit:
+				return
 			
 if __name__ == "__main__":
 	main()
+	#utils.benchmark(main)
