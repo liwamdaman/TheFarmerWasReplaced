@@ -11,27 +11,31 @@ opposite = {
 def is_positioned(x, y):
 	return x == get_pos_x() and y == get_pos_y()
 
-def goto(x, y, N = get_world_size()):
+def goto(x, y, allow_wrap=True):
+	N = get_world_size()
 	curr_x = get_pos_x()
 	dx = x - curr_x
 	x_dir = East
 	if dx < 0:
 		x_dir = opposite[x_dir]
-	if abs(dx) > N//2:
+	if allow_wrap and abs(dx) > N//2:
 		dx = N - abs(dx)
 		x_dir = opposite[x_dir]
 	for _ in range(abs(dx)):
-		move(x_dir)
+		if not move(x_dir):
+			return False
 	curr_y = get_pos_y()
 	dy = y - curr_y
 	y_dir = North
 	if dy < 0:
 		y_dir = opposite[y_dir]
-	if abs(dy) > N//2:
+	if allow_wrap and abs(dy) > N//2:
 		dy = N - abs(dy)
 		y_dir = opposite[y_dir]
 	for _ in range(abs(dy)):
-		move(y_dir)
+		if not move(y_dir):
+			return False
+	return True
 	
 def harvest_replace():
 	crop = get_entity_type()
