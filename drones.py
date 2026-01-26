@@ -8,10 +8,12 @@ def spawn_drones_vertical(fn, column = 0):
 		goto(column, j)
 		handles.append(spawn_drone(fn))
 	goto(column, N - 1)
-	fn()
+	res = fn()
+	results = []
 	for handle in handles:
-		wait_for(handle)
-	return handles
+		results.append(wait_for(handle))
+	results.append(res)
+	return results
 
 def spawn_drones_horizontal(fn, row = 0):
 	goto(0, row)
@@ -20,7 +22,14 @@ def spawn_drones_horizontal(fn, row = 0):
 		goto(i, row)
 		handles.append(spawn_drone(fn))
 	goto(N - 1, row)
-	fn()
+	res = fn()
+	results = []
 	for handle in handles:
-		wait_for(handle)
-	return handles
+		results.append(wait_for(handle))
+	results.append(res)
+	return results
+	
+def fn_with_arg(fn, arg):
+	def func():
+		fn(arg)
+	return func
