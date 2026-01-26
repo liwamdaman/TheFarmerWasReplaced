@@ -42,6 +42,8 @@ def simple():
 if __name__ == "__main__":
 	clear()
 	#set_world_size(4)
-	#traverse_field()
-	simple()
+	if num_items(Items.Cactus) < (N * N * 64):
+		print("not enough cacti to support full snake run")
+	traverse_field()
+	#simple()
 	
