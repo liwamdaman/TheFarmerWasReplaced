@@ -51,13 +51,15 @@ def init_counts():
 		petal_counts[n] = []
 	return petal_counts
 			
-def main():
+def main(isLeaderboard = False):
 	clear()
 	while True:
 		spawn_drones_horizontal(plant_sunflower_column)
 		counts = spawn_drones_horizontal(scan_column)
 		counts_by_column = merge_counts(counts)
 		collect(counts_by_column)
+		if isLeaderboard and num_items(Items.Power) >= 100000:
+			break
 	
 if __name__ == "__main__":
-	main()
+	main(True)

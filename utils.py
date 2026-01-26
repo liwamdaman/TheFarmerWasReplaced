@@ -41,15 +41,15 @@ def setup():
 def rand_hat():
 	hats = [
 		Hats.Brown_Hat,
-		Hats.Carrot_Hat,
+		#Hats.Carrot_Hat,
 		Hats.Gray_Hat,
 		Hats.Green_Hat,
-		Hats.Pumpkin_Hat,
+		#Hats.Pumpkin_Hat,
 		Hats.Purple_Hat,
 		Hats.Straw_Hat,
-		Hats.Sunflower_Hat,
-		Hats.Traffic_Cone,
-		Hats.Tree_Hat
+		#Hats.Sunflower_Hat,
+		#Hats.Traffic_Cone,
+		#Hats.Tree_Hat
 	]
 	change_hat(random_elem(hats))
 	
