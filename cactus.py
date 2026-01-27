@@ -56,10 +56,11 @@ def cactus():
 		harvest()
 		
 def cactus_parallel():
-	spawn_drones_vertical(plant_row)
-	spawn_drones_vertical(sort_row)
-	spawn_drones_horizontal(sort_column)
-	harvest()
+	while True:
+		spawn_drones_vertical(plant_row)
+		spawn_drones_vertical(sort_row)
+		spawn_drones_horizontal(sort_column)
+		harvest()
 
 if __name__ == "__main__":
 	clear()

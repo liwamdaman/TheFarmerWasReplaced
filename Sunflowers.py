@@ -9,19 +9,14 @@ def plant_sunflowers():
 		plant_sunflower_column(i)
 
 def plant_sunflower_column(column = get_pos_x()):
-	for j in range(N):
-		goto(column, j)
-		smart_plant(Entities.Sunflower)
-
-# Only scan grown sunflowers
-def scan_column(column = get_pos_x()):
 	petal_counts = init_counts()
 	for j in range(N):
 		goto(column, j)
-		wait_until_grown()
+		smart_plant(Entities.Sunflower)
 		petals = measure()
 		petal_counts[petals].append((column, j))
 	return petal_counts
+
 		
 def merge_counts(counts):
 	counts_by_column = init_counts()
@@ -43,6 +38,7 @@ def collect_by_column(counts_by_column):
 	harvest_list = counts_by_column[column]
 	for x, y in harvest_list:
 		goto(x, y)
+		wait_until_grown()
 		harvest()
 		
 def init_counts():
@@ -54,8 +50,7 @@ def init_counts():
 def main(isLeaderboard = False):
 	clear()
 	while True:
-		spawn_drones_horizontal(plant_sunflower_column)
-		counts = spawn_drones_horizontal(scan_column)
+		counts = spawn_drones_horizontal(plant_sunflower_column)
 		counts_by_column = merge_counts(counts)
 		collect(counts_by_column)
 		if isLeaderboard and num_items(Items.Power) >= 100000:
