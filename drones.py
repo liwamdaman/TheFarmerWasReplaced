@@ -14,6 +14,14 @@ def spawn_drones_vertical(fn, column = 0):
 		results.append(wait_for(handle))
 	results.append(res)
 	return results
+	
+def spawn_drones_vertical_alternating_no_wait(fn, column = 0):
+	goto(column, 0)
+	for j in range(0, N - 1, 2):
+		goto(column, j)
+		spawned = spawn_drone(fn)
+		while not spawned:
+			spawned = spawn_drone(fn)
 
 def spawn_drones_horizontal(fn, row = 0):
 	goto(0, row)
