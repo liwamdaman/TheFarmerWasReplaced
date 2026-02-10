@@ -75,8 +75,11 @@ def neighbours(i, j):
 	return res
 
 def benchmark(func, time_limit = 75):
+	start = get_time()
 	hay, wood, carrots, pumpkins = num_items(Items.Hay), num_items(Items.Wood), num_items(Items.Carrot), num_items(Items.Pumpkin)
 	func(time_limit)
+	quick_print("time elapsed")
+	quick_print(get_time() - start)
 	quick_print("hay, wood, carrots, pumpkins gained: ")
 	quick_print(num_items(Items.Hay) - hay)
 	quick_print(num_items(Items.Wood) - wood)

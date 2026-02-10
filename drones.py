@@ -23,7 +23,7 @@ def spawn_drones_vertical_alternating_no_wait(fn, column = 0):
 		handle = spawn_drone(fn)
 		while not handle:
 			handle = spawn_drone(fn)
-		handles.append(handles)
+		handles.append(handle)
 	return handles
 
 def spawn_drones_horizontal(fn, row = 0):
