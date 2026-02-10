@@ -16,25 +16,25 @@ water_restore_rate_by_level = {
 }
 
 WATER_LEVEL_THRESHOLD = 0.8
+WATER_MIN_ITEM_THRESHOLD = 100
 INITIAL_TOKEN_BUCKET_SIZE = 10000
 
 bucket = {
 	"most_recent_call": -1,
-	"tokens": INITIAL_TOKEN_BUCKET_SIZE
+	"tokens": min(INITIAL_TOKEN_BUCKET_SIZE, num_items(Items.Water))
 }
 
 def smart_water():
-	if get_water() > WATER_LEVEL_THRESHOLD:
+	if get_water() > WATER_LEVEL_THRESHOLD or num_items(Items.Water) < WATER_MIN_ITEM_THRESHOLD:
 		if Flags.DEBUG:
-			quick_print("Skipped watering due to water level threshold. Current time is: " + str(get_time()))
+			quick_print("Skipped watering due to water level threshold or item threshold. Current time is: " + str(get_time()))
 		return False
-	tokens = INITIAL_TOKEN_BUCKET_SIZE
 	if bucket["most_recent_call"] != -1:
 		elapsed = get_time() - bucket["most_recent_call"]
 	else:
 		elapsed = 0
 	bucket["most_recent_call"] = get_time()
-	bucket["tokens"] = min(INITIAL_TOKEN_BUCKET_SIZE, bucket["tokens"] + elapsed * water_restore_rate_by_level[num_unlocked(Unlocks.Watering)])
+	bucket["tokens"] = min(INITIAL_TOKEN_BUCKET_SIZE, num_items(Items.Water), bucket["tokens"] + elapsed * water_restore_rate_by_level[num_unlocked(Unlocks.Watering)])
 	if bucket["tokens"] < 1:
 		if Flags.DEBUG:
 			quick_print("Skipped watering due to rate limiting. Current time is: " + str(get_time()))

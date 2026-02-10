@@ -74,11 +74,8 @@ def neighbours(i, j):
 		res.append((i, j + 1))
 	return res
 
-def benchmark(func):
-	tick_limit = 100000
-	time_limit = 60
+def benchmark(func, time_limit = 75):
 	hay, wood, carrots, pumpkins = num_items(Items.Hay), num_items(Items.Wood), num_items(Items.Carrot), num_items(Items.Pumpkin)
-	#func(tick_limit)
 	func(time_limit)
 	quick_print("hay, wood, carrots, pumpkins gained: ")
 	quick_print(num_items(Items.Hay) - hay)

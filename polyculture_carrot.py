@@ -12,19 +12,27 @@ def harvest_and_plant_row(entity):
 		goto(i, j)
 		if get_entity_type() == entity:
 			wait_until_grown()
-			harvest()
+		harvest()
 		smart_plant(entity)
-		companion, (x, y) = get_companion()
+		pair = get_companion()
+		while not pair: # This is for some weird race condition that happens, doesn't seem to happen without speedup
+			pair = get_companion()
+		companion, (x, y) = pair
 		while companion != Entities.Grass and y % 2 != 1:
 			harvest()
 			smart_plant(entity)
-			companion, (x, y) = get_companion()
+			pair = get_companion()
+			while not pair:
+				pair = get_companion()
+			companion, (x, y) = pair
 		smart_water()
 
-def main(entity, time_limit = None):
+def main(entity, time_limit = None, is_leaderboard = False):
 	start = get_time()
 	while True:
 		spawn_drones_vertical_alternating_no_wait(fn_with_arg(harvest_and_plant_row, entity))
+		if is_leaderboard and num_items(Items.Carrot) >= 2000000000:
+			break
 		if time_limit and get_time() - start >= time_limit:
 			break
 
@@ -34,5 +42,5 @@ def test(time_limit):
 if __name__ == "__main__":
 	clear()
 	# use bush, tree, or carrots
-	#main(Entities.Carrot)
-	benchmark(test)
+	main(Entities.Carrot, None, True)
+	#benchmark(test)
