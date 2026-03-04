@@ -77,5 +77,6 @@ if __name__ == "__main__":
 	#set_world_size(6)
 	N = get_world_size()
 	#pumpkins()
-	pumpkins_parallel(None, True)
+	#pumpkins_parallel(None, True)
+	pumpkins_parallel()
 	#benchmark(pumpkins_parallel)
