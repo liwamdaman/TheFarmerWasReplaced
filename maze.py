@@ -4,6 +4,7 @@ from utils import rand_hat
 
 N = get_world_size()
 directions = [North, East, South, West]
+vectors = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
 def substance_needed(n = get_world_size(), maze_level = num_unlocked(Unlocks.Mazes)):
 	substance = n * 2**(maze_level - 1)
@@ -61,6 +62,49 @@ def wall_follow(n = get_world_size(), recenter = False, greedy = False):
 			while not move(directions[index]):
 				# rotate CW and try again
 				index = (index + 1) % 4
+				
+def bfs(n = get_world_size()):
+	def build_adjacency():
+		adj = {}
+		visited = set()
+		index = 0
+		while len(visited) < n * n:
+			x, y = get_pos_x(), get_pos_y()
+			visited.add((x, y))
+			adj[(x, y)] = []
+			for i in range(4):
+				if can_move(directions[i]):
+					adj[(x, y)].append((x + vectors[i][0], y + vectors[i][1]))
+			# Wall follow until the entire maze has been explored
+			index = (index - 1) % 4
+			while not move(directions[index]):
+				index = (index + 1) % 4
+		return adj
+	adj = build_adjacency()
+	#quick_print(adj)
+	for m in range(300):
+		start_x, start_y = get_pos_x(), get_pos_y()
+		dest_x, dest_y = measure()
+		queue = [[(start_x, start_y)]]
+		read_ptr = 0
+		visited = set()
+		visited.add((start_x, start_y))
+		while read_ptr < len(queue):
+			path = queue[read_ptr]
+			x, y = path[-1]
+			read_ptr += 1
+			if x == dest_x and y == dest_y:
+				# We now have the optimal path, move drone
+				for i, j in path:
+					goto(i, j)
+				substance = substance_needed(n)
+				use_item(Items.Weird_Substance, substance)
+				break
+			for neighbour in adj[(x, y)]:
+				if neighbour not in visited:
+					visited.add(neighbour)
+					queue.append(path + [neighbour])
+	return
 
 def maze():
 	for n in range(N):
@@ -78,12 +122,18 @@ def many_mazes():
 		plant(Entities.bush)
 		substance = substance_needed(5)
 		use_item(Items.Weird_Substance, substance)
-		wall_follow(5, True, False)
+		#wall_follow(5, True, False)
+		bfs(5)
+	handles = []
 	for i in range(2, 32, 5):
 		for j in range(2, 32, 5):
 			goto(i, j)
-			spawn_drone(start)
+			handle = spawn_drone(start)
+			if handle:
+				handles.append(handle)
 	start()
+	for handle in handles:
+		wait_for(handle)
 			
 def cheese():
 	set_world_size(5)
@@ -113,10 +163,11 @@ def cheese():
 			use_item(Items.Weird_Substance, substance)
 
 if __name__ == "__main__":
-	clear()
-	#print_substance_needed(32, 6)
-	#simple_drones()
-	#maze()
-	#cheese()
-	many_mazes()
+	while True:
+		clear()
+		#print_substance_needed(32, 6)
+		#simple_drones()
+		#maze()
+		#cheese()
+		many_mazes()
 	
